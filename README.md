@@ -8,6 +8,7 @@ and provide it with an application password in environment variables
 (`.env` is supported). Like this:
 
 ```
+AUTH_SECRET=somethingrandomlygenerated
 MAX_UPLOAD_BYTES=20000000
 PHOTOPRISM_URL=https://photos.example.com/
 PHOTOPRISM_USERNAME=admin

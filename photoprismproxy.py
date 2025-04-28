@@ -21,6 +21,7 @@ class Config:
     USERNAME = os.environ["PHOTOPRISM_USERNAME"]
     PASSWORD = os.environ["PHOTOPRISM_PASSWORD"]
     MAX_SIZE = int(os.environ["MAX_UPLOAD_BYTES"])
+    AUTH_SECRET = os.environ["AUTH_SECRET"]
 
 
 class PhotoPrism:
@@ -144,6 +145,13 @@ pp = PhotoPrism(Config.URL, Config.USERNAME, Config.PASSWORD)
 
 app = flask.Flask(__name__, template_folder="pages")
 app.config["MAX_CONTENT_LENGTH"] = Config.MAX_SIZE
+
+
+@app.before_request
+def require_login():
+    token = flask.request.cookies.get("auth-token")
+    if token != Config.AUTH_SECRET:
+        return flask.send_from_directory("pages", "auth.html")
 
 
 @app.get("/")
