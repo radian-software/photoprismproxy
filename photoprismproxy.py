@@ -52,7 +52,6 @@ class PhotoPrism:
         hashes = []
         for photo in photos:
             data = photo.read()
-            print(len(data))
             h = hashlib.sha1()
             h.update(data)
             hashes.append(h.hexdigest())
@@ -72,7 +71,6 @@ class PhotoPrism:
             json={"albums": [album] if album else []},
         )
         resp.raise_for_status()
-        print(hashes)
         resp = requests.get(
             self.url
             + "/api/v1/photos?"
