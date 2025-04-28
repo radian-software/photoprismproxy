@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>PhotoPrismProxy</title>
+  </head>
+  <body>
+    <div>Uploaded photo(s)</div>
+    <ul>
+      {% for url in photo_urls %}
+        <li><a href="{{ url }}">{{ url }}</a></li>
+      {% endfor %}
+    </ul>
+    {% if album_url %}
+    <div>Album link</div>
+    <ul>
+      <li><a href="{{ album_url }}">{{ album_url }}</a></li>
+    </ul>
+  </body>
+</html>

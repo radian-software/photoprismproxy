@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>PhotoPrismProxy</title>
+  </head>
+  <body>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <label for="photos">Upload photos:</label>
+      <input
+        name="photos"
+        type="file"
+        accept="image/png, image/jpeg"
+        multiple
+        required
+      />
+      <label for="album">Create/edit album:</label>
+      <input name="album" type="text" />
+      <label for="sort">Sort order:</label>
+      <select name="sort">
+        <option value="none">As uploaded</option>
+        <option value="asc" selected>By filename A-Z</option>
+        <option value="desc">By filename Z-A</option>
+      </select>
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
