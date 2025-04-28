@@ -1,3 +1,5 @@
+import hashlib
+import io
 import os
 import random
 import string
@@ -46,20 +48,19 @@ class PhotoPrism:
         return "".join(random.choices(string.ascii_lowercase + string.digits, k=7))
 
     def upload_photos(self, photos, album=None) -> Tuple[str, list[str], str | None]:
-        # TODO: instead of creating a temporary album, compute the
-        # sha1 hashes of each photo before upload, and then use the
-        # search API to find them by hash
-        temp_album = "ppp-import-" + self.generate_token()
-        albums = [temp_album]
-        if album:
-            albums.append(album)
         route = f"/api/v1/users/{self.user_id}/upload/{self.generate_token()}"
+        hashes = []
         for photo in photos:
+            data = photo.read()
+            print(len(data))
+            h = hashlib.sha1()
+            h.update(data)
+            hashes.append(h.hexdigest())
             resp = requests.post(
                 self.url + route,
                 headers=self.headers,
                 files={
-                    "files": (photo.filename, photo),
+                    "files": (photo.filename, io.BytesIO(data)),
                 },
             )
             resp.raise_for_status()
@@ -68,33 +69,17 @@ class PhotoPrism:
         resp = requests.put(
             self.url + route,
             headers=self.headers,
-            json={"albums": albums},
+            json={"albums": [album] if album else []},
         )
         resp.raise_for_status()
-        resp = requests.get(
-            self.url
-            + "/api/v1/albums?"
-            + urlencode(
-                {
-                    "count": "2",
-                    "q": temp_album,
-                }
-            ),
-            headers=self.headers,
-        )
-        resp.raise_for_status()
-        temp_albums = resp.json()
-        # In case filtering logic fails, make sure we aren't deleting
-        # some other random album.
-        assert len(temp_albums) == 1
-        temp_album_id = temp_albums[0]["UID"]
+        print(hashes)
         resp = requests.get(
             self.url
             + "/api/v1/photos?"
             + urlencode(
                 {
                     "count": "1000",
-                    "s": temp_album_id,
+                    "q": "hash:" + "|".join(hashes),
                 }
             ),
             headers=self.headers,
@@ -104,6 +89,9 @@ class PhotoPrism:
             f"{self.url}/api/v1/t/{photo['Hash']}/{self.preview_token}/fit_4096"
             for photo in resp.json()
         ]
+        assert len(photo_urls) == len(
+            photos
+        ), f"{len(photo_urls)} urls for {len(photos)} photos"
         album_url = None
         if album:
             resp = requests.get(
@@ -150,8 +138,6 @@ class PhotoPrism:
                 album_url = f"{self.url}/library/albums/{album_id}/view"
             else:
                 album_url = f"{self.url}/s/{album_token}/{album_slug}"
-        resp = requests.delete(self.url + f"/api/v1/albums/{temp_album_id}")
-        resp.raise_for_status()
         upload_id = self.generate_token()
         return upload_id, photo_urls, album_url
 
