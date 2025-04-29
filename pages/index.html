@@ -2,27 +2,83 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PhotoPrismProxy</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+      integrity="sha512-yh2RE0wZCVZeysGiqTwDTO/dKelCbS9bP2L94UvOFtl/FKXcNAje3Y2oBg/ZMZ3LS1sicYk4dYVGtDex75fvvA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      form {
+        max-width: 300px;
+      }
+    </style>
   </head>
   <body>
     <form action="/upload" method="POST" enctype="multipart/form-data">
-      <label for="photos">Upload photos:</label>
-      <input
-        name="photos"
-        type="file"
-        accept="image/png, image/jpeg"
-        multiple
-        required
-      />
-      <label for="album">Create/edit album:</label>
-      <input name="album" type="text" />
-      <label for="sort">Sort order:</label>
-      <select name="sort">
-        <option value="none">As uploaded</option>
-        <option value="asc" selected>By filename A-Z</option>
-        <option value="desc">By filename Z-A</option>
-      </select>
-      <input type="submit" value="Submit" />
+      <div class="field">
+        <label class="label" for="photos">Upload photos:</label>
+        <div class="control">
+          <div class="file">
+            <label class="file-label">
+              <input
+                class="file-input"
+                name="photos"
+                type="file"
+                accept="image/png, image/jpeg"
+                multiple
+                required
+              />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">Choose files</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="sort">Sort order:</label>
+        <div class="control">
+          <div class="select">
+            <select name="sort">
+              <option value="none">As uploaded</option>
+              <option value="asc" selected>By filename A-Z</option>
+              <option value="desc">By filename Z-A</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="album">Create/edit album:</label>
+        <div class="control">
+          <input class="input" name="album" type="text" />
+        </div>
+      </div>
+      <div class="field mt-5">
+        <div class="control">
+          <button class="button is-link" type="submit">Submit</button>
+        </div>
+      </div>
     </form>
   </body>
 </html>
