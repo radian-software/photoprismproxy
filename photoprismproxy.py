@@ -124,15 +124,16 @@ class PhotoPrism:
             #     resp = requests.post(
             #         self.url + f"/api/v1/albums/{album_id}/links",
             #         headers=self.headers,
-            #         json={"uid": album_id, "link": {"Slug": slug}},
+            #         json={"Slug": slug},
             #     )
             #     resp.raise_for_status()
             #     album_token = resp.json()["Token"]
             #     album_slug = slug
             # album_url = f"{self.url}/s/{album_token}/{album_slug}"
             #
-            # TODO: for some reason client apps can't create share
-            # links in the photoprism acl, give internal link for now
+            # TODO: https://github.com/photoprism/photoprism/commit/a64e2ea4459bc56b2ba945d1a3fef962740d9953
+            # lets us use the commented out code once that is released
+            # and used publicly
             if not album_token:
                 album_url = f"{self.url}/library/albums/{album_id}/view"
             else:
