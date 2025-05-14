@@ -21,7 +21,7 @@ COPY photoprismproxy.py /src/
 COPY pages/ /src/pages/
 
 COPY --from=sleepingd /sleepingd /usr/local/bin/sleepingd
-ENV SLEEPING_BEAUTY_COMMAND="gunicorn photoprismproxy:app -b 127.0.0.1:5001 --access-logfile - -R"
+ENV SLEEPING_BEAUTY_COMMAND="gunicorn photoprismproxy:app -b 127.0.0.1:5001 -t 60 --access-logfile - -R"
 ENV SLEEPING_BEAUTY_TIMEOUT_SECONDS=300
 ENV SLEEPING_BEAUTY_COMMAND_PORT=5001
 ENV SLEEPING_BEAUTY_LISTEN_PORT=5000
