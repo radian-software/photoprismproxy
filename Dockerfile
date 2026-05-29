@@ -1,12 +1,9 @@
 FROM radiansoftware/sleeping-beauty:v4.1.0 AS sleepingd
 
-# EOL April 2029
-FROM ubuntu:24.04
+# EOL April 2031
+FROM ubuntu:26.04
 
-RUN apt-get update && apt-get install -y python3 python3-pip python3-venv pipx && rm -rf /var/lib/apt/lists/*
-ENV PATH=/root/.local/bin:${PATH}
-RUN pipx install "poetry>=2.1,<2.2"
-RUN pipx inject poetry "poetry-plugin-export>=1.9,<1.10"
+RUN apt-get update && apt-get install -y --no-install-recommends python3-venv python3-poetry-plugin-export && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
 COPY pyproject.toml poetry.lock /src/
