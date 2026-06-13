@@ -106,8 +106,17 @@ class PhotoPrism:
             )
             resp.raise_for_status()
             matching_albums = resp.json()
-            assert len(matching_albums) == 1
-            album_id = matching_albums[0]["UID"]
+            assert len(matching_albums) <= 1, len(matching_albums)
+            if matching_albums:
+                album_id = matching_albums[0]["UID"]
+            else:
+                resp = requests.post(
+                    self.url + "/api/v1/albums",
+                    headers=self.headers,
+                    json={"Title": album},
+                )
+                resp.raise_for_status()
+                album_id = resp.json()["UID"]
             resp = requests.get(
                 self.url + f"/api/v1/albums/{album_id}/links",
                 headers=self.headers,
