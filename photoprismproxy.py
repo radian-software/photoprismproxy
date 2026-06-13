@@ -144,7 +144,9 @@ app.config["MAX_CONTENT_LENGTH"] = Config.MAX_SIZE
 def require_login():
     token = flask.request.cookies.get("auth-token")
     if token != Config.AUTH_SECRET:
-        return flask.send_from_directory("pages", "auth.html")
+        resp = flask.send_from_directory("pages", "auth.html")
+        resp.status_code = 401
+        return resp
 
 
 @app.get("/")
