@@ -119,25 +119,17 @@ class PhotoPrism:
                     album_token = link["Token"]
                     album_slug = link["Slug"]
                     break
-            # if not album_token:
-            #     slug = self.generate_token()
-            #     resp = requests.post(
-            #         self.url + f"/api/v1/albums/{album_id}/links",
-            #         headers=self.headers,
-            #         json={"Slug": slug},
-            #     )
-            #     resp.raise_for_status()
-            #     album_token = resp.json()["Token"]
-            #     album_slug = slug
-            # album_url = f"{self.url}/s/{album_token}/{album_slug}"
-            #
-            # TODO: https://github.com/photoprism/photoprism/commit/a64e2ea4459bc56b2ba945d1a3fef962740d9953
-            # lets us use the commented out code once that is released
-            # and used publicly
             if not album_token:
-                album_url = f"{self.url}/library/albums/{album_id}/view"
-            else:
-                album_url = f"{self.url}/s/{album_token}/{album_slug}"
+                slug = self.generate_token()
+                resp = requests.post(
+                    self.url + f"/api/v1/albums/{album_id}/links",
+                    headers=self.headers,
+                    json={"Slug": slug},
+                )
+                resp.raise_for_status()
+                album_token = resp.json()["Token"]
+                album_slug = slug
+            album_url = f"{self.url}/s/{album_token}/{album_slug}"
         upload_id = self.generate_token()
         return upload_id, photo_urls, album_url
 
