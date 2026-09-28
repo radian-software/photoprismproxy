@@ -1,4 +1,4 @@
-FROM radiansoftware/sleeping-beauty:v4.1.0 AS sleepingd
+FROM radiansoftware/sleeping-beauty:v4.1.1 AS sleepingd
 
 # EOL April 2031
 FROM ubuntu:26.04
