@@ -100,6 +100,7 @@ class PhotoPrism:
                     {
                         "count": "2",
                         "q": album,
+                        "type": "album",
                     }
                 ),
                 headers=self.headers,
